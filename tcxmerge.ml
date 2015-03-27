@@ -36,5 +36,7 @@ let () =
   let track =
     try Gpx.of_xml (Xml.parse_file track_path)
     with _ -> error (Printf.sprintf "couldn't parse GPX file \"%s\"" track_path) in
-  (* TODO *)
-  ()
+  let output =
+    merge input track ?time_lag:None in
+  try Tcx.format_file output output_path
+  with _ -> error (Printf.sprintf "couldn't save TCX file \"%s\"" output_path)
