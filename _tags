@@ -4,6 +4,7 @@
 <tcxmerge.*>: package(tcx)
 
 <gpx_data.*>: package(gpx)
+<gpx_data.*>: package(ISO8601)
 <tcx_data.*>: package(tcx)
 
 <signal.*>: package(fftw3)
