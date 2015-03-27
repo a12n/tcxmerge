@@ -24,5 +24,8 @@ let parse_args () =
 let () =
   let input_path, output_path, track_path =
     parse_args () in
+  let input =
+    try Tcx.parse_file input_path
+    with _ -> error (Printf.sprintf "couldn't parse TCX file \"%s\"" input_path) in
   (* TODO *)
   ()
