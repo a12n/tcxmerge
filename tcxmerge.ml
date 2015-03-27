@@ -5,9 +5,24 @@ let error msg =
 
 (* Time lag detection *)
 
+let resample_altitude input track =
+  let alt = Tab_fun.of_array (Tcx_data.altitude input) in
+  let ele = Tab_fun.of_array (Gpx_data.ele track) in
+  match Tab_fun.(domain alt, domain ele) with
+  | Some (t1, t2), Some (t3, t4) ->
+     let dt = 1.0 in
+     let min_t, max_t = min t1 t3, max t2 t4 in
+     Some (dt, (min_t, max_t),
+           Tab_fun.sample alt (min_t, max_t) dt,
+           Tab_fun.sample ele (min_t, max_t) dt)
+  | _, _ -> None
+
 let time_lag input track =
-  (* TODO *)
-  None
+  match resample_altitude input track with
+    None -> None
+  | Some (dt, _interval, alt, ele) ->
+     let k = Signal.lag ele alt in
+     Some (float_of_int k *. dt)
 
 (* Merge data *)
 
