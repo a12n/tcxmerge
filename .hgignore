@@ -1,0 +1,5 @@
+syntax: glob
+
+*.byte
+*.native
+_build/
