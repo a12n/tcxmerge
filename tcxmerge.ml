@@ -3,6 +3,12 @@ let error msg =
   prerr_endline msg;
   exit 1
 
+(* Merge data *)
+
+let merge input track ?(time_lag=0.0) =
+  (* TODO *)
+  input
+
 (* Command line arguments *)
 
 let parse_args () =
