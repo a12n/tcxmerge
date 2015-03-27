@@ -3,6 +3,12 @@ let error msg =
   prerr_endline msg;
   exit 1
 
+(* Time lag detection *)
+
+let time_lag input track =
+  (* TODO *)
+  None
+
 (* Merge data *)
 
 let merge input track ?(time_lag=0.0) =
