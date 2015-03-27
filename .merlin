@@ -1,4 +1,5 @@
 B _build/
+PKG fftw3
 PKG gpx
 PKG tcx
 PKG xml-light
