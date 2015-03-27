@@ -27,5 +27,8 @@ let () =
   let input =
     try Tcx.parse_file input_path
     with _ -> error (Printf.sprintf "couldn't parse TCX file \"%s\"" input_path) in
+  let track =
+    try Gpx.of_xml (Xml.parse_file track_path)
+    with _ -> error (Printf.sprintf "couldn't parse GPX file \"%s\"" track_path) in
   (* TODO *)
   ()
