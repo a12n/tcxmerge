@@ -1,3 +1,8 @@
+let error msg =
+  prerr_string "tcxmerge: ";
+  prerr_endline msg;
+  exit 1
+
 (* Command line arguments *)
 
 let parse_args () =
