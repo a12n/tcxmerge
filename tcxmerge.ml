@@ -26,9 +26,30 @@ let time_lag input track =
 
 (* Merge data *)
 
-let merge input track ?(time_lag=0.0) =
-  (* TODO *)
-  input
+let merge ?(time_lag=0.0) input track =
+  let ele = Tab_fun.of_array (Gpx_data.ele track) in
+  let lat = Tab_fun.of_array (Gpx_data.lat track) in
+  let lon = Tab_fun.of_array (Gpx_data.lon track) in
+  let transform = function
+    | `Activity_lap ({Tcx.Activity_lap.start_time; _} as l) ->
+       let t = Tcx.Timestamp.to_unix_time start_time +. time_lag in
+       `Activity_lap {l with Tcx.Activity_lap.start_time = Tcx.Timestamp.of_unix_time t}
+    | `Track_point ({Tcx.Track_point.time; altitude; _} as p) ->
+       let t = Tcx.Timestamp.to_unix_time time +. time_lag in
+       (* Use altitude from GPX track, if there's any. Otherwise use
+        * altitude from TCX. *)
+       let altitude =
+         match Tab_fun.eval_opt ele t with
+           Some h -> Some h
+         | None -> altitude in
+       let position =
+         match Tab_fun.eval2_opt lat lon t with
+           Some (latitude, longitude) -> Some {Tcx.Position.latitude; longitude}
+         | None -> None in
+       `Track_point {p with Tcx.Track_point.time = Tcx.Timestamp.of_unix_time t;
+                            altitude; position}
+    | x -> x in
+  Tcx.map transform input
 
 (* Command line arguments *)
 
