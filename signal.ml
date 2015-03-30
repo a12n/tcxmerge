@@ -10,9 +10,10 @@ let xcorr a b =
   let x = Fft.Array1.create Fft.float Bigarray.c_layout n_out in
   let a' = Fft.Array1.create Fft.complex Bigarray.c_layout n_freq in
   let b' = Fft.Array1.create Fft.complex Bigarray.c_layout n_freq in
-  let fft_a = Fft.Array1.r2c x a' in
-  let fft_b = Fft.Array1.r2c x b' in
-  let ifft = Fft.Array1.c2r a' x in
+  let meas = Fft.Estimate in
+  let fft_a = Fft.Array1.r2c ~meas x a' in
+  let fft_b = Fft.Array1.r2c ~meas x b' in
+  let ifft = Fft.Array1.c2r ~meas a' x in
   Bigarray.Array1.modifyi (fun k _ -> try a.(k - n_in + 1)
                                       with Invalid_argument _ -> 0.0) x;
   Fft.exec fft_a;
