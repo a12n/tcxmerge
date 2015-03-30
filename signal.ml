@@ -2,6 +2,9 @@ open Batteries
 
 module Fft = Fftw3.D
 
+let norm2 =
+  sqrt % Array.fsum % Array.map (fun x -> x *. x)
+
 let xcorr a b =
   let n_in = max (Array.length a) (Array.length b) in
   let max_lag = n_in - 1 in
@@ -23,7 +26,8 @@ let xcorr a b =
   Bigarray.Array1.modifyi (fun k _ -> Complex.(mul a'.{k} (conj b'.{k}))) a';
   Fft.exec ifft;
   let out_scale = 1.0 /. (float_of_int n_out) in
-  Array.init n_out (fun k -> k - max_lag, x.{k} *. out_scale)
+  let coeff_scale = 1.0 /. (norm2 a *. norm2 b) in
+  Array.init n_out (fun k -> k - max_lag, x.{k} *. out_scale *. coeff_scale)
 
 let lag a b =
   let max_corr r1 r2 =
