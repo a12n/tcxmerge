@@ -32,4 +32,4 @@ let xcorr a b =
 let lag a b =
   let max_corr r1 r2 =
     if (snd r1) > (snd r2) then r1 else r2 in
-  xcorr a b |> Array.reduce max_corr |> fst
+  xcorr a b |> Array.reduce max_corr

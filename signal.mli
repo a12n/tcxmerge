@@ -1,6 +1,6 @@
 (** Estimates the lag of signal [b] relative to the signal [a] using
- * [xcorr]. *)
-val lag : float array -> float array -> int
+ * [xcorr]. Returns also the correlation coefficient of the lag. *)
+val lag : float array -> float array -> int * float
 
 (** Cross correlation of signals [a] and [b]. While signals may have
  * different lengths, they must be sampled with the same sampling

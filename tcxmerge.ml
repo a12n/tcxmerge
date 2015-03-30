@@ -21,7 +21,7 @@ let time_lag input track =
   match resample_altitude input track with
     None -> None
   | Some (dt, _interval, alt, ele) ->
-     let k = Signal.lag ele alt in
+     let k, _r = Signal.lag ele alt in
      Some (float_of_int k *. dt)
 
 (* Merge data *)
