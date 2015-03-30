@@ -8,7 +8,12 @@ let error msg =
 let resample_altitude input track =
   let alt = Tab_fun.of_array (Tcx_data.altitude input) in
   let ele = Tab_fun.of_array (Gpx_data.ele track) in
+  let half_day = 12.0 *. 3600.0 in
   match Tab_fun.(domain alt, domain ele) with
+  | Some (t1, t2), Some (t3, t4) when
+         abs_float (t1 -. t3) > half_day ||
+           abs_float (t2 -. t4) > half_day ->
+     None
   | Some (t1, t2), Some (t3, t4) ->
      let dt = 1.0 in
      let min_t, max_t = min t1 t3, max t2 t4 in
