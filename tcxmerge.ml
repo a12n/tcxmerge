@@ -1,6 +1,9 @@
-let error msg =
+let warn msg =
   prerr_string "tcxmerge: ";
-  prerr_endline msg;
+  prerr_endline msg
+
+let error msg =
+  warn msg;
   exit 1
 
 (* Time lag detection *)
@@ -13,6 +16,7 @@ let resample_altitude input track =
   | Some (t1, t2), Some (t3, t4) when
          abs_float (t1 -. t3) > half_day ||
            abs_float (t2 -. t4) > half_day ->
+     warn "unrelated data sets (too far apart in time)";
      None
   | Some (t1, t2), Some (t3, t4) ->
      let dt = 1.0 in
@@ -26,7 +30,9 @@ let time_lag input track =
   match resample_altitude input track with
     None -> None
   | Some (dt, _interval, alt, ele) ->
-     let k, _r = Signal.lag ele alt in
+     let k, r = Signal.lag ele alt in
+     if r < 0.85 then
+       warn "unrelated data sets (correlation on altitude data is too low)";
      Some (float_of_int k *. dt)
 
 (* Merge data *)
