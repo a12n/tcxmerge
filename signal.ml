@@ -22,7 +22,8 @@ let xcorr a b =
   Fft.exec fft_b;
   Bigarray.Array1.modifyi (fun k _ -> Complex.(mul a'.{k} (conj b'.{k}))) a';
   Fft.exec ifft;
-  Array.init n_out (fun k -> k - max_lag, x.{k} /. float_of_int n_out)
+  let out_scale = 1.0 /. (float_of_int n_out) in
+  Array.init n_out (fun k -> k - max_lag, x.{k} *. out_scale)
 
 let lag a b =
   let max_corr r1 r2 =
