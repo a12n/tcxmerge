@@ -24,10 +24,10 @@ OCaml ≥ 4.01.0 is required to build `tcxmerge`.
 
 Also the following packages must be installed:
 
-* `batteries` (≥ 2.3.0)
-* `fftw3` (≥ 0.7.1)
-* `gpx` (= 1.1.1)
-* `tcx` (≥ 0.25.0)
+* [batteries](http://batteries.forge.ocamlcore.org/) (≥ 2.3.0)
+* [fftw3](https://github.com/Chris00/fftw-ocaml/) (≥ 0.7.1)
+* [gpx](https://github.com/rundat/ocaml-gpx/) (= 1.1.1)
+* [tcx](https://bitbucket.org/a12n/ocaml-tcx/) (≥ 0.25.0)
 
 Build is initiated by `make` command. There is no installation. The
 resulting binary `_build/tcxmerge.native` may be renamed and copied to
