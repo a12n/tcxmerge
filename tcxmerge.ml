@@ -1,6 +1,5 @@
-let warn msg =
-  prerr_string "tcxmerge: ";
-  prerr_endline msg
+let warn =
+  prerr_endline
 
 let error msg =
   warn msg;
@@ -16,7 +15,7 @@ let resample_altitude input track =
   | Some (t1, t2), Some (t3, t4) when
          abs_float (t1 -. t3) > half_day ||
            abs_float (t2 -. t4) > half_day ->
-     warn "unrelated data sets (too far apart in time)";
+     warn "Unrelated data sets (too far apart in time)";
      None
   | Some (t1, t2), Some (t3, t4) ->
      let dt = 1.0 in
@@ -32,7 +31,7 @@ let time_lag input track =
   | Some (dt, _interval, alt, ele) ->
      let k, r = Signal.lag ele alt in
      if r < 0.85 then
-       warn "unrelated data sets (correlation on altitude data is too low)";
+       warn "Unrelated data sets (correlation on altitude data is too low)";
      Some (float_of_int k *. dt)
 
 (* Merge data *)
@@ -85,11 +84,11 @@ let () =
     parse_args () in
   let input =
     try Tcx.parse_file input_path
-    with _ -> error (Printf.sprintf "couldn't parse TCX file \"%s\"" input_path) in
+    with _ -> error (Printf.sprintf "Couldn't parse TCX file \"%s\"" input_path) in
   let track =
     try Gpx.of_xml (Xml.parse_file track_path)
-    with _ -> error (Printf.sprintf "couldn't parse GPX file \"%s\"" track_path) in
+    with _ -> error (Printf.sprintf "Couldn't parse GPX file \"%s\"" track_path) in
   let output =
     merge input track ?time_lag:(time_lag input track) in
   try Tcx.format_file output output_path
-  with _ -> error (Printf.sprintf "couldn't save TCX file \"%s\"" output_path)
+  with _ -> error (Printf.sprintf "Couldn't save TCX file \"%s\"" output_path)
