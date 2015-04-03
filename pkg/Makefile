@@ -1,5 +1,5 @@
 MACH != uname -m
-OS != uname -s | tr '[:upper:]' '[:lower:]'
+OS != uname -s | tr -c -d '[:alpha:]' | tr '[:upper:]' '[:lower:]'
 VSN != cat ../vsn
 
 DIR = tcxmerge-${VSN}-${OS}-${MACH}
