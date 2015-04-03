@@ -10,7 +10,7 @@ set trackFileTypes [list {"GPS Exchange Files" ".gpx"} {"All Files" "*"}]
 namespace eval mergeCmd {
     proc find {} {
         foreach prefix {{} ./} {
-            foreach suffix {.native .exe} {
+            foreach suffix {{} .exe .native} {
                 set cmd [auto_execok ${prefix}tcxmerge${suffix}]
                 if {$cmd ne {}} {
                     return $cmd
