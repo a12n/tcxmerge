@@ -1,6 +1,7 @@
 MACH != uname -m
 OS != uname -s | tr -c -d '[:alpha:]' | tr '[:upper:]' '[:lower:]'
 VSN != cat ../vsn
+EXE != case ${OS} in cygwin*) echo .exe ;; *) echo ;; esac
 
 DIR = tcxmerge-${VSN}-${OS}-${MACH}
 
@@ -15,13 +16,13 @@ tar: ${DIR}.tar.gz
 
 zip: ${DIR}.zip
 
-${DIR}.tar.gz: ${DIR}/tcxmerge ${DIR}/README.md
+${DIR}.tar.gz: ${DIR}/tcxmerge${EXE} ${DIR}/README.md
 	tar -czvf $@ ${DIR}
 
-${DIR}.zip: ${DIR}/tcxmerge ${DIR}/README.md
+${DIR}.zip: ${DIR}/tcxmerge${EXE} ${DIR}/README.md
 	zip -9 -r $@ ${DIR}
 
-${DIR}/tcxmerge: ${DIR}
+${DIR}/tcxmerge${EXE}: ${DIR}
 	cp ../tcxmerge.native $@
 	strip $@
 
