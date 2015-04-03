@@ -4,18 +4,22 @@ VSN != cat ../vsn
 
 DIR = tcxmerge-${VSN}-${OS}-${MACH}
 
-.PHONY: all clean
+.PHONY: all clean tar zip
 
-all: ${DIR}.tar.gz
+all: tar
 
 clean:
-	-rm -r ${DIR} ${DIR}.tar.gz
+	-rm -r ${DIR} ${DIR}.tar.gz ${DIR}.zip
 
-${DIR}.tar.gz: ${DIR}.tar
-	gzip -9 ${DIR}.tar
+tar: ${DIR}.tar.gz
 
-${DIR}.tar: ${DIR}/tcxmerge ${DIR}/README.md
-	tar -cvf $@ ${DIR}
+zip: ${DIR}.zip
+
+${DIR}.tar.gz: ${DIR}/tcxmerge ${DIR}/README.md
+	tar -czvf $@ ${DIR}
+
+${DIR}.zip: ${DIR}/tcxmerge ${DIR}/README.md
+	zip -9 -r $@ ${DIR}
 
 ${DIR}/tcxmerge: ${DIR}
 	cp ../tcxmerge.native $@
